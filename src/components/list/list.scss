@@ -1,0 +1,31 @@
+@import '@/assets/base.scss';
+
+$prefixCls: 'gewd-list';
+$preItemfixCls: 'gewd-item';
+
+.#{$prefixCls} {
+	&-header, &-footer{
+		padding: 0 40px;
+		line-height: 80px;
+		@include font-dpr(34px); 
+		// 文字超出隐藏
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		vertical-align: top;
+	}
+	&-body{
+		position: relative;
+		background-color: #fff;
+		@include border-top();
+		&:after{
+			@include list-item-bottom-line(0px);
+		}
+		div:not(:last-child){
+			&.#{$preItemfixCls}:after {
+				@include list-item-bottom-line(0px);
+			}
+		}
+	}
+}
+

@@ -1,0 +1,36 @@
+// 基础颜色配置
+$textGray: #888;
+$lightGray: #ddd;
+$themeBgColor: #f8f8fb;
+$darkGray: #bbb;
+$viColor: #00b4a5;
+$darkViColor: #009486;
+
+@mixin font-dpr($fontSize){
+	font-size: $fontSize;
+
+	[data-dpr="2"] & {
+		font-size: $fontSize * 2;
+	}
+
+	[data-dpr="3"] & {
+		font-size: $fontSize * 3;
+	}
+}
+
+@mixin border-top(){
+	border-top: 2px solid #ddd;
+}
+
+@mixin border-bottom(){
+	border-bottom: 2px solid #ddd;
+}
+
+@mixin list-item-bottom-line($left: 40px) {
+	position: absolute;
+	content: '';
+	left: $left;
+	bottom: 0;
+	width: 100%;
+	@include border-bottom();
+}

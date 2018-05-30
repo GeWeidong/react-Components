@@ -1,0 +1,82 @@
+@import '@/assets/base.scss';
+
+$prefixCls: 'gewd-btn';
+
+.#{$prefixCls} {
+	display: block;
+	margin: 15px 0;
+	border-radius: 10px;
+	height: 90px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 35px;
+	border: 2px solid $lightGray;
+    text-decoration: none;
+    transition: all .2s;
+
+	&.default{
+		background-color: #fff;
+		color: #000;
+	}
+	&.primary{
+		background-color: $viColor;
+		color: #fff;
+	}
+	&.ghost{
+		background-color: #fff;
+		color: $viColor;
+		border: 2px solid $viColor;
+	}
+	&.ghost.#{$prefixCls}-active{
+		background-color: $viColor;
+		color: #fff;
+	}
+	&.primary.#{$prefixCls}-active{
+		background-color: $darkViColor;
+	}
+	&.#{$prefixCls}-active{
+		background-color: $lightGray;
+	}
+
+	&.default.disabled {
+		background-color: $lightGray;
+
+		.#{$prefixCls}-text{
+			color: $darkGray;
+		}
+	}
+
+	&.primary.disabled {
+		opacity: 0.5;
+	}
+
+	&.ghost.disabled {
+		border-color: $darkGray;
+		background-color: transparent;
+		opacity: 0.5;
+		span{
+			color: $darkGray;
+		}
+	}
+	.loading{
+        width: 40px;
+        height: 40px;
+        border: 2px solid;
+        margin-right: 10px;
+        border-color: #fff #fff transparent;
+        border-radius: 50%;
+        box-sizing: border-box;
+        /*动画时间1s，线性变化，无限循环*/
+        animation: loading 1s linear infinite;
+	}
+
+	@keyframes loading{
+        0%{
+            transform: rotate(0deg);
+        }
+        100%{
+            transform: rotate(360deg);
+        }
+    }
+}
