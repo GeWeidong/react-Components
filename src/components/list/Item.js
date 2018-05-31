@@ -56,7 +56,7 @@ Item.defaultProps = {
     activeClassName: 'gewd-item-active',
     wrap: true,
     disabled: false,
-    arrow: 'horizontal'
+    // arrow: 'horizontal'
 }
 
 export default Item;

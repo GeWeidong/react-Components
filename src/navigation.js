@@ -4,6 +4,7 @@ import asyncComponent from '@/utils/asyncComponent';
 
 const home = asyncComponent( () => import('@/pages/home') );
 const buttons = asyncComponent( () => import('@/pages/button') );
+const switchs = asyncComponent( () => import('@/pages/switch') );
 
 export default class Navigation extends Component{
   render(){
@@ -12,6 +13,7 @@ export default class Navigation extends Component{
         <Switch>
           <Route path="/" exact strict component={home} />
           <Route path="/buttons" exact strict component={buttons} />
+          <Route path="/switchs" exact strict component={switchs} />
           <Redirect to="/" />
         </Switch>
       </BrowserRouter>

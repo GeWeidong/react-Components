@@ -22,7 +22,7 @@ input:focus,select:focus,textarea:focus,button:focus{
   outline: none;
 }
 /*重置部分表单圆角和内阴影*/
-input[type="text"],input[type="file"],input[type="password"],input[type="search"],input[type="tel"],input[type="number"],input[type="email"],input[type="url"],textarea{
+input[type="text"],input[type="file"],input[type="password"],input[type="search"],input[type="tel"],input[type="number"],input[type="email"],input[type="checkbox"],textarea{
     -webkit-appearance:none;
 }
 /*去除文本框上下箭头*/

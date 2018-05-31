@@ -1,0 +1,109 @@
+@import '@/assets/base.scss';
+$prefixCls: 'gewd-switch';
+
+/*switch开关*/
+.#{$prefixCls} {
+    margin: 20px 0;
+    label{
+        position: relative;
+        display: block;
+        width: 120px;
+        height: 60px;
+        overflow: hidden;
+    }
+    .text-left,.text-right{
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        text-align: center;
+        line-height: 60px;
+        background-color: transparent;
+        font-size: 20px;
+        color: #fff;
+        top: 0;
+        transition: all .3s;
+    }
+    .text-left{
+        left: -50%;
+        &.checked{
+            left: 0;
+        }
+    }
+    .text-right{
+        right: 0;
+        &.checked{
+            right: -50%;
+        }
+    }
+
+    .#{$prefixCls}-switch {
+        width: 120px;
+        height: 60px;
+        position: relative;
+        background-color: #fdfdfd;
+        border-radius: 30px;
+        background-clip: content-box;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+    .#{$prefixCls}-switch:before {
+        content: '';
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 30px;
+        transition: left 0.3s;
+    }
+    .#{$prefixCls}-switch:checked:before {
+        transition: left 0.3s;
+    }
+    .#{$prefixCls}-switch:checked {
+        background-color: #64bd63;
+        transition: all 0.3s;
+    }
+    &.disabled{
+        opacity: 0.5;
+    }
+    &.ios {
+        .#{$prefixCls}-switch{
+            border: 2px solid #e5e5e5;
+            box-shadow: 0 2px 5px rgba(0,0,0,.3) inset;
+            background-color: $darkGray;
+        }
+        .#{$prefixCls}-switch:before{
+            top: -4px;
+            background-color: #fff;
+            box-shadow: 0 8px 10px rgba(0,0,0,.3);
+        }
+        .#{$prefixCls}-switch:checked {
+            background-color: #64bd63;
+        }
+        .#{$prefixCls}-switch:checked:before {
+            left: 60px;
+        }
+    }
+    &.android {
+        .#{$prefixCls}-switch{
+            height: 60px;
+            background-color: $viColor;
+        }
+        .#{$prefixCls}-switch:before{
+            width: 52px;
+            height: 52px;
+            left: 4px;
+            top: 4px;
+            background-color: #fff;
+        }
+        .#{$prefixCls}-switch:checked{
+            background-color: $darkGray;
+        }
+        .#{$prefixCls}-switch:checked:before {
+            left: 64px;
+        }
+        
+    }
+    
+}
+
