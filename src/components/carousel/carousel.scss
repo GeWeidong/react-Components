@@ -1,0 +1,36 @@
+@import '@/assets/base.scss';
+
+$prefixCls: 'gewd';
+
+.#{$prefixCls}-carousel{
+	width: 100%;
+	height: 300px;
+	overflow: hidden;
+	position: relative;
+	.#{$prefixCls}-list {
+		position: absolute;
+		left: 0;
+		top: 0;
+		.carsouel-item{
+			float: left;
+		}
+	}
+	.#{$prefixCls}-dotslist{
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		transform: translate3D(-50%, 0, 0);
+		span{
+			display: inline-block;
+			width: 30px;
+			height: 30px;
+			background: #fff;
+			border-radius: 30px;
+			margin-right: 10px;
+			transition: all 0.3s;
+			&.active{
+				background: orange;
+			}
+		}
+	}
+}

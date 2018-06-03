@@ -25,7 +25,7 @@ class Home extends Component {
 					<List.Item arrow={'horizontal'} extra="Switch" onClick={this.gotoPage.bind(this, 'switchs')}>滑动按钮</List.Item>
 					<List.Item arrow={'horizontal'} extra="DatePicker">日期选择器</List.Item>
 					<List.Item arrow={'horizontal'} extra="Picker">选择器</List.Item>
-					<List.Item arrow={'horizontal'} extra="Carsoul">轮播图</List.Item>
+					<List.Item arrow={'horizontal'} extra="Carsoul" onClick={this.gotoPage.bind(this, 'carousels')}>轮播图</List.Item>
 				</List>
 			</div>
 		)
