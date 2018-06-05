@@ -3,27 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Hammer from 'hammerjs';
 import './carousel.scss';
-const animationFunc = (obj, style, time, callback) => {
-	let objStyle = obj.style;
-	let diffObj = {};
-	let step = 20, interVal = time / step, num = 0;
-
-	for(let k in style){
-		diffObj[k] = (Number.parseFloat(style[k]) - Number.parseFloat(objStyle[k])) / interVal;
-	}
-	const timer = setInterval(() => {
-		if(num < interVal){
-			for(let k in diffObj){
-				objStyle[k] = Number.parseFloat(objStyle[k]) + diffObj[k] + 'px';
-			}
-			num ++;
-		}else{
-			clearInterval(timer);
-			callback && callback();
-		}
-		
-	}, step)
-}
+import animationFunc from '@/utils/animationFunc';
 
 export default class Carousel extends Component {
 	constructor(props){
@@ -79,19 +59,19 @@ export default class Carousel extends Component {
 			this.changeFegiruIndex();
 		}, this.props.intervalTime)
 	}
-	// 自动轮播
+	// 自动轮播的规则
 	changeFegiruIndex() {
 		const list = this.refs.list;
 		const {startFegiruIndex, data, loopData} = this.state;
 		const {loopFromStart, onFigureChange} = this.props;
 		let newIndex = startFegiruIndex + 1;
-		let len = loopFromStart ? loopData.length : data.length;
-		if(startFegiruIndex >= len-1) {newIndex = 0}
+		let len = data.length;
+		if(startFegiruIndex >= len-1) {newIndex = 0};
 		animationFunc(list, {'left': loopFromStart ? -2*this.carouselWidth + 'px' : -this.carouselWidth * newIndex + 'px'}, 300, () => {
 			if(loopFromStart){
 				// 如果无缝滚动，滚动完，切换data并且left值复位 只有三个 置于中间
-				list.style.left = -this.carouselWidth + 'px';
 				this.setState({startFegiruIndex: newIndex, loopData: this.getLoopData(true, newIndex)})
+				list.style.left = -this.carouselWidth + 'px';
 			}else{
 				this.setState({startFegiruIndex: newIndex})
 			}
@@ -99,7 +79,7 @@ export default class Carousel extends Component {
 			onFigureChange && onFigureChange(newIndex);
 		})
 	}
-
+	// 手势系统
 	touchSwiper() { 
 		const {loopFromStart} = this.props;
 		const domList = this.refs.list;
@@ -113,6 +93,7 @@ export default class Carousel extends Component {
 		let currentLeft = 0;
 
 		listHammer.on('panstart', (e)=>{
+			clearInterval(this.autoplayTimer);
 			startPosition = e.deltaX;
 			currentLeft = Number.parseFloat(domList.style.left);
 		})
@@ -120,19 +101,94 @@ export default class Carousel extends Component {
 			domList.style.left = this.getMovePosition(e.deltaX - startPosition, currentLeft) + 'px';
 		})
 		listHammer.on('panend', (e)=>{
+			let moveDis = e.deltaX - startPosition;
+			const listDOM = this.refs.list;
+			const {startFegiruIndex} = this.state;
+
 			if(!loopFromStart){
 				if(moveDis <= Number.parseFloat(-this.carouselWidth / 2)){
 					// 向左滑超过1/2
-					animationFunc(listDOM, {'left':  + 'px' : -this.carouselWidth * newIndex + 'px'}, 300, () => {
-
+					const nextIndex = this.getNextIndex(true);
+		
+					animationFunc(listDOM, {'left': -this.carouselWidth * nextIndex + 'px'}, 300, () => {
+						this.setState({startFegiruIndex: nextIndex});
+						this.autoplay();
 					})
+				}
+				// 如果左滑移动距离不够  归位
+				if(Number.parseFloat(-this.carouselWidth / 2) < moveDis && moveDis <= 0){
+					animationFunc(listDOM, {'left': -this.carouselWidth * startFegiruIndex + 'px'}, 300, () => {
+						this.autoplay();
+					});
+				}
+				if(moveDis >= Number.parseFloat(this.carouselWidth / 2)){
+					// 向右滑超过1/2
+					const nextIndex = this.getNextIndex(false);
+		
+					animationFunc(listDOM, {'left': -this.carouselWidth * nextIndex + 'px'}, 300, () => {
+						this.setState({startFegiruIndex: nextIndex});
+						this.autoplay();
+					})
+				}
+				// 如果右滑移动距离不够  归位
+				if(moveDis > 0 && moveDis < Number.parseFloat(this.carouselWidth / 2)){
+					animationFunc(listDOM, {'left': -this.carouselWidth * startFegiruIndex + 'px'}, 300, () => {
+						this.autoplay();
+					});
+				}
+			}else{
+				// 无限循环
+				if(moveDis <= Number.parseFloat(-this.carouselWidth / 2)){
+					const nextIndex = this.getNextIndex(true);
+					animationFunc(listDOM, {'left': -this.carouselWidth * 2 + 'px'}, 300, () => {
+						this.setState({startFegiruIndex: nextIndex, loopData: this.getLoopData(true, nextIndex)});
+						listDOM.style.left = -this.carouselWidth + 'px';
+						this.autoplay();
+					})
+				}
+				if(moveDis < 0 && moveDis >= Number.parseFloat(-this.carouselWidth / 2)){
+					animationFunc(listDOM, {'left': -this.carouselWidth + 'px'}, 300, () => {
+						this.autoplay();
+					})
+				}
+				if(moveDis >= Number.parseFloat(this.carouselWidth / 2)){
+					// 向右滑超过1/2
+					const nextIndex = this.getNextIndex(false);
+			
+					animationFunc(listDOM, {'left': 0 + 'px'}, 300, () => {
+						this.setState({startFegiruIndex: nextIndex, loopData: this.getLoopData(true, nextIndex)});
+						listDOM.style.left = -this.carouselWidth + 'px';
+						this.autoplay();
+					})
+				}
+				// 如果右滑移动距离不够  归位
+				if(moveDis > 0 && moveDis < Number.parseFloat(this.carouselWidth / 2)){
+					animationFunc(listDOM, {'left': -this.carouselWidth + 'px'}, 300, () => {
+						this.autoplay();
+					});
 				}
 			}
 		})
 	}
+	// 得到下一个index 
+	getNextIndex(plus) {
+		const currentIndex = this.state.startFegiruIndex;
+		const {loopFromStart} = this.props;
+		const len = this.state.data.length;
+		let nextIndex = 0;
 
+		if(plus) {
+			if(currentIndex == len - 1) {nextIndex = (loopFromStart ? 0 : len - 1); return nextIndex;}
+			nextIndex = currentIndex + 1;
+			return nextIndex;
+		}else{
+			if(currentIndex == 0) {nextIndex = (loopFromStart ? len - 1 : 0); return nextIndex;}
+			nextIndex = currentIndex - 1;
+			return nextIndex;
+		}
+	}
+	// 跟手滑动限制
 	getMovePosition(moveDis, currentDis) {
-		console.log(moveDis)
 		let result = currentDis + moveDis;
 		if(!this.props.loopFromStart) {
 			if(result >= 0) {
@@ -151,7 +207,7 @@ export default class Carousel extends Component {
 
 		return result;
 	}
-
+	// list style
 	listStyle() {
 		const {data, loopData, startFegiruIndex} = this.state;
 		const {loopFromStart, startIndex} = this.props;
@@ -170,7 +226,7 @@ export default class Carousel extends Component {
 			}
 		}
 	}
-
+	// list dom
 	listDOM()  {
 		const {loopData, data} = this.state;
 		const dataSource = this.props.loopFromStart ? loopData : data;
@@ -184,7 +240,7 @@ export default class Carousel extends Component {
 			)
 		})
 	}
-
+	// 点点
 	dotsDOM() {
 		const {startFegiruIndex} = this.state;
 		const {prefixCls, dots, data} = this.props;
@@ -238,7 +294,7 @@ Carousel.defaultProps = {
     data: [],
     startIndex: 0,
     autoplay: true,
-    intervalTime: 1000,
+    intervalTime: 3000,
     loopFromStart: true,
     dots: true,
     swipe: true,

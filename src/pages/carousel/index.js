@@ -24,18 +24,40 @@ export default class CarouselPage extends Component {
 				</h1>
 
 				<div className="carousel-box">
+					<ListTitle title={'一般的轮播图 可滑动'} />
 					<Carousel
 						data={carouselData}
 						loopFromStart={false}
 						startIndex={1}
-						autoplay={false}
+						intervalTime={1000}
+						// autoplay={false}
 					 />
-					 <h3>无缝轮播</h3>
+					 <ListTitle title={'无缝轮播 可滑动'} />
 					 <Carousel
-						data={carouselData.slice(0, 3)}
+						data={carouselData}
 						loopFromStart={true}
+						startIndex={0}
+						intervalTime={3000}
+						// autoplay={false}
+					 />
+
+					 <ListTitle title={'一般的轮播图 不可滑动'} />
+					<Carousel
+						data={carouselData}
+						loopFromStart={false}
 						startIndex={1}
-						autoplay={false}
+						swipe={false}
+						intervalTime={1000}
+						// autoplay={false}
+					 />
+					 <ListTitle title={'无缝轮播 不可滑动'} />
+					 <Carousel
+						data={carouselData}
+						loopFromStart={true}
+						startIndex={0}
+						intervalTime={3000}
+						swipe={false}
+						// autoplay={false}
 					 />
 				</div>
 			</div>
