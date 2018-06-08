@@ -8,7 +8,7 @@ const Button = (props) => {
 	const {prefixCls, type, disabled, loading, activeClassName, className, onClick, children} = props;
 	const classNames = classnames(prefixCls, className, type, {'disabled': disabled, 'loading': loading});
 	return (
-		<Touchable onClick={onClick} activeClassName={!disabled ? activeClassName : ''}>
+		<Touchable onPress={onClick} activeClassName={!disabled ? activeClassName : ''}>
 			<a className={classNames}>
 				{loading && <div className="loading"></div>}
 				<span className={`${prefixCls}-text`}>{children}</span>

@@ -1,0 +1,49 @@
+@import '@/assets/base.scss';
+@import '@/assets/animation.scss';
+$prefixCls: 'gewd';
+
+.#{$prefixCls}_noticeManager{
+	
+	.mask{
+		width: 100%;
+	    height: 100%;
+	    background: rgba(0,0,0,0.7);
+	    z-index: 102;
+	    left: 0;
+	    top: 0;
+	    position: fixed;
+	}
+	.toast_wraper{
+		position: fixed;
+		width: 100%;
+		left: 0;
+		top: 30%;
+		height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		z-index: 103;
+	}
+	.#{$prefixCls}_notice {
+		position: absolute;
+		padding: 20px 40px;
+		background-color: rgba(0, 0, 0, 0.7);
+		border-radius: 15px;
+		color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		
+		transition: all 0.3s;
+		&.leave{
+			transform: translate3D(0, -50%, 0);
+			opacity: 0;	
+		}
+		&.info{
+			animation: zoomIn .3s;
+		}
+	}
+	
+}
+
